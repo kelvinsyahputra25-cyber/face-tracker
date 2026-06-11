@@ -130,11 +130,11 @@ async def detect(
             }
         )
 
-    return {
+    return JSONResponse({
         "session_id": sid,
         "faces": len(faces),
         "tracks": results,
-    }
+    })
 
 
 @app.post("/api/enroll/{name}")
@@ -156,13 +156,13 @@ async def enroll_frame(name: str, file: UploadFile = File(...), min_face: int = 
     min_size = (max(1, min_face), max(1, min_face))
     faces = detect_faces(gray, detector, min_size=min_size)
     if len(faces) != 1:
-        return {"saved": False, "reason": "need exactly one face"}
+        return JSONResponse({"saved": False, "reason": "need exactly one face"})
 
     face = normalize_face(gray, faces[0])
     path = person_dir / f"{int(time.time() * 1000)}.png"
     cv2.imwrite(str(path), face)
     count = sum(1 for f in person_dir.iterdir() if f.suffix.lower() in {".jpg", ".jpeg", ".png", ".bmp"})
-    return {"saved": True, "person": person, "count": count}
+    return JSONResponse({"saved": True, "person": person, "count": count})
 
 
 @app.post("/api/train")
@@ -173,13 +173,13 @@ async def train():
         return JSONResponse({"ok": False, "error": str(exc)}, status_code=400)
 
     info = reload_model()
-    return {"ok": True, **info}
+    return JSONResponse({"ok": True, **info})
 
 
 @app.get("/api/people")
 async def people():
     if not KNOWN_FACES_DIR.exists():
-        return {"people": []}
+        return JSONResponse({"people": []})
     result = []
     for person_dir in sorted(p for p in KNOWN_FACES_DIR.iterdir() if p.is_dir()):
         count = sum(
@@ -188,14 +188,14 @@ async def people():
             if f.suffix.lower() in {".jpg", ".jpeg", ".png", ".bmp"}
         )
         result.append({"name": person_dir.name, "count": count})
-    return {"people": result}
+    return JSONResponse({"people": result})
 
 
 @app.post("/api/reset-tracker")
 async def reset_tracker(session_id: str = Form("")):
     if session_id and session_id in trackers:
         del trackers[session_id]
-    return {"ok": True}
+    return JSONResponse({"ok": True})
 
 
 @app.get("/style.css")
