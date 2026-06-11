@@ -1,5 +1,4 @@
-```javascript
-const API = "http://127.0.0.1:8000";
+const API = "";
 
 const video = document.getElementById("video");
 const canvas = document.getElementById("canvas");
@@ -253,4 +252,3 @@ async function loadPeople() {
 }
 
 loadPeople();
-```
