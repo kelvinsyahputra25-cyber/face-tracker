@@ -77,6 +77,11 @@ async def index():
     return FileResponse(FRONTEND_DIR / "index.html")
 
 
+@app.get("/favicon.ico")
+async def favicon():
+    return JSONResponse(content=None, status_code=204)
+
+
 @app.get("/api/model")
 async def model_info():
     info = reload_model()
