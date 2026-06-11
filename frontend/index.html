@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Face Tracker</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="app">
+        <main class="main">
+            <section class="video-section">
+                <div class="video-wrap">
+                    <video id="video" autoplay playsinline muted></video>
+                    <canvas id="overlay"></canvas>
+                    <div id="camera-off" class="camera-off">Camera off</div>
+                </div>
+                <footer class="status-bar">
+                    <span class="status-dot" id="status-dot"></span>
+                    <span id="status-text">Ready</span>
+                    <span class="status-spacer"></span>
+                    <span id="faces-text">0 faces · 0 tracks</span>
+                    <span id="fps-text"></span>
+                </footer>
+            </section>
+
+            <aside class="panel">
+                <header class="panel-header">
+                    <h1>Face Tracker</h1>
+                    <p id="model-text">not loaded</p>
+                </header>
+
+                <section class="panel-section">
+                    <h2>Camera</h2>
+                    <div class="btn-row">
+                        <button id="start-btn" class="btn primary">Start</button>
+                        <button id="stop-btn" class="btn" disabled>Stop</button>
+                    </div>
+                </section>
+
+                <section class="panel-section">
+                    <h2>Settings</h2>
+                    <label class="field">
+                        <span>Threshold <strong id="threshold-val">52</strong></span>
+                        <input type="range" id="threshold" min="20" max="100" value="52">
+                    </label>
+                    <label class="field">
+                        <span>Min face size <strong id="min-face-val">80</strong></span>
+                        <input type="range" id="min-face" min="40" max="200" value="80">
+                    </label>
+                </section>
+
+                <section class="panel-section">
+                    <h2>Enroll</h2>
+                    <label class="field">
+                        <span>Name</span>
+                        <input type="text" id="enroll-name" placeholder="Your name">
+                    </label>
+                    <label class="field">
+                        <span>Samples <strong id="samples-val">60</strong></span>
+                        <input type="range" id="samples" min="10" max="120" value="60">
+                    </label>
+                    <div class="btn-row">
+                        <button id="enroll-btn" class="btn primary" disabled>Start enroll</button>
+                        <button id="enroll-stop-btn" class="btn" disabled>Stop</button>
+                    </div>
+                    <p id="enroll-status" class="hint">Idle</p>
+                </section>
+
+                <section class="panel-section">
+                    <h2>Model</h2>
+                    <div class="btn-row">
+                        <button id="train-btn" class="btn primary">Train</button>
+                        <button id="reload-btn" class="btn">Reload</button>
+                    </div>
+                </section>
+
+                <section class="panel-section">
+                    <h2>People</h2>
+                    <ul id="people-list" class="people-list">
+                        <li class="muted">No enrolled people</li>
+                    </ul>
+                </section>
+            </aside>
+        </main>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
