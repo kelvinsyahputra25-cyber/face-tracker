@@ -131,6 +131,18 @@ class CentroidTracker:
                 del self.tracks[track_id]
 
 
+ROOT = Path(__file__).resolve().parent
+KNOWN_FACES_DIR = ROOT / "known_faces"
+DATA_DIR = ROOT / "data"
+MODEL_PATH = DATA_DIR / "lbph_model.yml"
+LABELS_PATH = DATA_DIR / "labels.json"
+FACE_SIZE = (200, 200)
+DEFAULT_RECOGNITION_THRESHOLD = 52.0
+SINGLE_PERSON_THRESHOLD_CAP = 45.0
+TRACK_HISTORY_SIZE = 7
+TRACK_MIN_KNOWN_VOTES = 3
+
+
 def ensure_dirs() -> None:
     KNOWN_FACES_DIR.mkdir(exist_ok=True)
     DATA_DIR.mkdir(exist_ok=True)
