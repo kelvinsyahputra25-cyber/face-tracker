@@ -86,12 +86,11 @@ async function detectLoop() {
 
         const data = await response.json();
 
-        drawFaces(data.faces);
+        drawFaces(data.tracks);
 
         if (
             enrolling &&
-            data.faces &&
-            data.faces.length === 1
+            data.faces === 1
         ) {
 
             const name =
@@ -109,7 +108,7 @@ async function detectLoop() {
     setTimeout(detectLoop, 150);
 }
 
-function drawFaces(faces) {
+function drawFaces(tracks) {
 
     ctx.clearRect(
         0,
@@ -120,9 +119,9 @@ function drawFaces(faces) {
 
     faceList.innerHTML = "";
 
-    faces.forEach(face => {
+    tracks.forEach(track => {
 
-        const [x, y, w, h] = face.box;
+        const [x, y, w, h] = track.box;
 
         ctx.strokeStyle = "#22c55e";
         ctx.lineWidth = 3;
@@ -132,8 +131,10 @@ function drawFaces(faces) {
         ctx.fillStyle = "#22c55e";
         ctx.font = "18px Segoe UI";
 
+        const conf = track.confidence == null ? "" : ` (${Number(track.confidence).toFixed(1)})`;
+
         ctx.fillText(
-            face.name,
+            `ID ${track.track_id}: ${track.name}${conf}`,
             x,
             y - 10
         );
@@ -141,7 +142,7 @@ function drawFaces(faces) {
         const li = document.createElement("li");
 
         li.textContent =
-            `${face.name} (${face.confidence.toFixed(1)})`;
+            `ID ${track.track_id}: ${track.name}${conf}`;
 
         faceList.appendChild(li);
     });
